@@ -1,11 +1,9 @@
-import { Router } from "express";
+import { Request, Response } from "express";
+import { Get } from "../routes";
 
-export default class AuthController {
-  private router = Router();
-  hello = this.router.get("/", (req, res, next) => {
+export class AuthController {
+  @Get("/hello")
+  public hello(req: Request, res: Response) {
     res.send("hello");
-  });
-  getuser = this.router.get("/", (req, res, next) => {
-    res.send("hello");
-  });
+  }
 }
