@@ -25,12 +25,7 @@ class Server {
     config({ path: "../.env" });
     this.app.use(cors({ origin: "http//:localhost:3000" }));
     this.app.use(logger("dev"));
-
     this.app.use(passport.initialize());
-    // this.app.use((req, res, next) => {
-    //   next(createError(404));
-    // });
-
     this.app.use(
       (err: { message: any; status: any }, req: any, res: any, next: any) => {
         res.locals.message = err.message;
