@@ -1,73 +1,69 @@
+import { Server } from "@overnightjs/core";
+import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import { config } from "dotenv";
-import express, { Express } from "express";
-import http from "http";
+import session from "express-session";
 import logger from "morgan";
-import passport from "passport";
-import { Profile, Strategy } from "passport-twitter";
-import { AuthController } from "./controllers/authController";
+import {
+  authenticate,
+  deserializeUser,
+  initialize,
+  serializeUser,
+  use,
+} from "passport";
+import { Strategy } from "passport-twitter";
+import { AuthController } from "./controllers/auth.controller";
+import { TweetsController } from "./controllers/tweets.controller";
 
-class Server {
-  private readonly _app: Express;
-  private _server!: http.Server;
-  constructor() {
-    this._app = express();
-    this._app.set("port", process.env.PORT || 5000);
-    this.configureMiddleware();
+class AppServer {
+  constructor(private _server: Server) {
+    this._server.app.set("port", process.env.PORT || 5000);
+    this.configureMiddlewares();
+    this.setupControllers();
   }
-  get app(): Express {
-    return this._app;
-  }
-  get server(): http.Server {
-    return this._server;
-  }
-  public configureMiddleware() {
-    config({ path: "../.env" });
-    this.app.use(cors({ origin: "http//:localhost:3000" }));
-    this.app.use(logger("dev"));
-    this.app.use(passport.initialize());
-    this.app.use(
-      (err: { message: any; status: any }, req: any, res: any, next: any) => {
-        res.locals.message = err.message;
-        res.locals.error = req.app.get("env") === "development" ? err : {};
-
-        // render the error page
-        res.status(err.status || 500);
-        res.render("error");
-      }
-    );
-
-    passport.serializeUser(function (user, done) {
+  configureMiddlewares() {
+    config();
+    this._server.app
+      .use(cors({ origin: "http://localhost:3000" }))
+      .use(logger("dev"))
+      .use(json())
+      .use(urlencoded({ extended: false }))
+      .use(initialize())
+      .use(session({ secret: "shfj", resave: true, saveUninitialized: true }));
+    serializeUser(function (user, done) {
       done(null, user);
     });
-
-    passport.deserializeUser((user: any, done) => {
-      done(null, user);
+    deserializeUser(function (id, done) {
+      done(null, null);
     });
-    passport.use(
+    use(
       new Strategy(
         {
-          consumerKey: `${process.env.TWITTER_API_KEY}`,
-          consumerSecret: `${process.env.TWITTER_API_SECRET_KEY}`,
-          callbackURL: `${process.env.TWITTER_CALLBACK_URL}`,
+          consumerKey: process.env.TWITTER_CONSUMER_KEY as string,
+          consumerSecret: process.env.TWITTER_CONSUMER_SECRET as string,
+          callbackURL: process.env.TWITTER_CALLBACK_URL as string,
         },
-        (
-          accessToken: string,
-          refreshToken: string,
-          profile: Profile,
-          done: any
-        ) => {
-          console.log(profile);
+        (accessToken, refreshToken, profile, done) => {
           done(null, profile);
         }
       )
     );
+    this._server.app.get("/auth/twitter", authenticate("twitter"));
+    this._server.app.get(
+      "/auth/twitter/callback",
+      authenticate("twitter", {
+        failureRedirect: "/auth",
+        successRedirect: "/auth/user",
+      })
+    );
   }
-  public start() {
-    this._server = this._app.listen(this._app.get("port"), () => {
-      console.log("Server is running on port " + this._app.get("port"));
+  setupControllers() {
+    this._server.addControllers([new AuthController(), new TweetsController()]);
+  }
+  start() {
+    this._server.app.listen(this._server.app.get("port"), () => {
+      console.log(`🚀 server running on port ${this._server.app.get("port")}`);
     });
   }
 }
-
-export const server = new Server();
+export const server = new AppServer(new Server());
