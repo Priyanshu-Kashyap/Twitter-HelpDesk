@@ -1,14 +1,35 @@
-import { api, setClientToken } from "../api";
+import {TwitterOauth} from "../utils/twitterOauth";
+import axios, {Method} from "axios";
 
 export class TweetService {
-  constructor() {
-    setClientToken();
-  }
-  async mentionedTweets(id: string = "1119550687002497024") {
-    return (await api.get(`/2/users/${id}/mentions`)).data;
-  }
-  async retweet(id: string, body: any) {
-    return (await api.post(`/1.1/statuses/retweet/${id}`, body)).data;
-  }
-  tweeter() {}
+    private twitterOauth;
+
+    constructor() {
+        this.twitterOauth = new TwitterOauth();
+    }
+
+    requestTwitter = (
+        method: string,
+        url: string,
+        req: any,
+        reqParams = {},
+        accessCredentials: { token: any; tokenSecret: any }
+    ) => {
+        const authHeaderValue = this.twitterOauth.getAuthorization(
+            method?.toUpperCase(),
+            url,
+            reqParams,
+            accessCredentials?.token,
+            accessCredentials?.tokenSecret
+        );
+        return axios({
+            method: method?.toLowerCase() as Method,
+            headers: {
+                Authorization: authHeaderValue,
+            },
+            params: reqParams,
+        })
+            .then(({data}) => ({success: true, data: data}))
+            .catch(err => ({success: false, err}));
+    };
 }

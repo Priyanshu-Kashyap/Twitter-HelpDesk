@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: "1rem 1rem 0 0",
       height: "50%",
       justifyContent: "center",
-      background: "#4d9fec",
+      background: theme.palette.primary.main,
       flexDirection: "column",
     },
     loginArea: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const LoginPage: FC = props => {
+const LoginPage: FC<any> = props => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -40,6 +40,7 @@ const LoginPage: FC = props => {
       </div>
       <div className={classes.loginArea}>
         <Button
+          onClick={() => props.user(true)}
           style={{
             borderRadius: "4rem",
             background: "#1DA1F2",

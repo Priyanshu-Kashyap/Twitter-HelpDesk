@@ -15,7 +15,7 @@ import HelpDesk from "./components/help-desk/HelpDesk";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      background: "linear-gradient(#1DA1F2,#FFFFFF,#406BBF)",
+      background: "linear-gradient(to top,#1DA1F2,#FFFFFF,#406BBF)",
       height: "100vh",
       justifyContent: "center",
       alignItems: "center",
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const App: FC = () => {
   const [dark, setDark] = useState(true);
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
 
   const darkTheme: PaletteOptions = {
     type: "dark",
@@ -62,7 +62,7 @@ const App: FC = () => {
       <ThemeContext.Provider value={[dark, setDark]}>
         <div className={classes.root}>
           <CssBaseline />
-          {user ? <HelpDesk /> : <LoginPage />}
+          {user ? <HelpDesk /> : <LoginPage user={setUser} />}
         </div>
       </ThemeContext.Provider>
     </ThemeProvider>

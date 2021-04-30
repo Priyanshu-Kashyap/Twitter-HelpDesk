@@ -1,10 +1,9 @@
 import { Server } from "@overnightjs/core";
 import cors from "cors";
-import { json } from "express";
+import { config } from "dotenv";
+import { json, urlencoded } from "express";
 import session from "express-session";
 import logger from "morgan";
-// import { authenticate, initialize, serializeUser, use } from "passport";
-// import { Strategy } from "passport-twitter";
 import { AuthController } from "./controllers/auth.controller";
 import { TweetsController } from "./controllers/tweets.controller";
 
@@ -15,10 +14,12 @@ class AppServer {
     this.setupControllers();
   }
   configureMiddlewares() {
+    config();
     this._server.app
       .use(cors({ origin: "http://localhost:3000" }))
       .use(logger("dev"))
       .use(json())
+      .use(urlencoded({ extended: true }))
       .use(session({ secret: "shfj", resave: true, saveUninitialized: true }));
   }
   setupControllers() {
