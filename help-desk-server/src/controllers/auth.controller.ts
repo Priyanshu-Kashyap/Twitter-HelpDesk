@@ -1,14 +1,14 @@
 import { Controller, Get } from "@overnightjs/core";
-import { Request, Response } from "express";
+import { Response } from "express";
+import { server } from "../server";
 
 @Controller("auth")
 export class AuthController {
-  @Get("user")
-  user(req: any, res: Response) {
-    res.send(req.session.passport.user);
+
+  @Get('user')
+  getUser(req: any, res: Response) {
+    res.send(req.session.user)
+
   }
-  @Get("logout")
-  logout(req: Request, res: Response) {
-    req.session.destroy(() => res.redirect("/"));
-  }
+
 }

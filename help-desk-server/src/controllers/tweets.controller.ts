@@ -1,15 +1,33 @@
-import { Controller, Get } from "@overnightjs/core";
+import { Controller, Get, Post } from "@overnightjs/core";
 import { Response } from "express";
-import { TweetService } from "../services/tweet.service";
+import { TweetsService } from "../services/tweets.service";
 
 @Controller("tweets")
 export class TweetsController {
-  private TweetService: TweetService;
+  private tweetService: TweetsService;
+
   constructor() {
-    this.TweetService = new TweetService();
+    this.tweetService = new TweetsService()
   }
+
+
   @Get("mentions")
   mentions(req: any, res: Response) {
-    this.TweetService.mentionedTweets().then(data => console.log(data));
+    this.tweetService.twitterClient(req.session.accessToken, req.session.refreshToken)
+        .get('statuses/mentions_timeline', (err: any, data: any) => {
+          res.send(data)
+        })
+  }
+
+  @Post('reply/:id')
+  reply(req: any, res: Response) {
+    console.log(req.body, req.params.id)
+    this.tweetService.twitterClient(req.session.accessToken, req.session.refreshToken)
+        .post('statuses/update', {
+          status: req.body.text,
+          in_reply_to_status_id: req.params.id,
+        }, (err: any, data: any) => {
+          res.send(data)
+        })
   }
 }
