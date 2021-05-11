@@ -1,13 +1,15 @@
 import React, { FC } from "react";
-import { ListItem, makeStyles } from "@material-ui/core";
+import { ListItem, makeStyles, Typography } from "@material-ui/core";
 import { createStyles } from "@material-ui/styles";
 import { MentionModel } from "../../../models/mention.model";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: ({ chat, name }: any) => ({
       paddingBottom: "0.5rem",
       width: "auto",
+      maxWidth: "30rem",
       borderRadius:
         chat.user.screen_name !== name
           ? "1rem 1rem 0 1rem"
@@ -30,9 +32,20 @@ const Conversation: FC<{
 }> = ({ chat, username, name }) => {
   const classes = useStyles({ chat, name });
   return (
-    <ListItem className={classes.root}>
-      {chat.text.replace(`@${username}`, "").replace(`@${name}`, "")}
-    </ListItem>
+    <>
+      <ListItem className={classes.root}>
+        {chat.text.replace(`@${username}`, "").replace(`@${name}`, "")}
+      </ListItem>
+      <Typography
+        style={{
+          alignSelf: chat.user.screen_name !== name ? "flex-end" : "flex-start",
+          marginBottom: "0.5rem",
+        }}
+        variant={"caption"}
+      >
+        {moment(new Date(chat.created_at)).format("LT")}
+      </Typography>
+    </>
   );
 };
 

@@ -6,11 +6,12 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import { ReactComponent as Image } from "../../../assets/icons/add-image.svg";
 import { ReactComponent as Emoji } from "../../../assets/icons/emoji.svg";
 import { ReactComponent as Send } from "../../../assets/icons/send.svg";
 import { socket } from "../../../App";
+import { MentionContext } from "../../../contexts/mention.context";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const MessageBox: FC<{ username: string; id: string }> = ({ username, id }) => {
   const classes = useStyles();
+  const [, setMention] = useContext(MentionContext);
   const [message, setMessage] = useState({
     message: "",
     id: id,
@@ -39,6 +41,7 @@ const MessageBox: FC<{ username: string; id: string }> = ({ username, id }) => {
   const onSubmit = () => {
     if (message.message === "") return;
     socket.emit("reply", { msg: message, user: username });
+    socket.on("mention", (data: any) => setMention(data));
     setMessage({ ...message, message: "" });
   };
 
@@ -52,6 +55,7 @@ const MessageBox: FC<{ username: string; id: string }> = ({ username, id }) => {
       </IconButton>
       <div className={classes.input}>
         <InputBase
+          autoFocus
           value={message.message}
           onChange={(e) =>
             setMessage({ ...message, message: e.currentTarget.value })

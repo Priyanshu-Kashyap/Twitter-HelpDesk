@@ -1,7 +1,6 @@
 import { makeStyles, Theme } from "@material-ui/core";
 import { createStyles } from "@material-ui/styles";
-import React, { FC, useState } from "react";
-import { ChatInfoContext } from "../../contexts/chatInfo.context";
+import React, { FC } from "react";
 import ChatSection from "./chat-section/ChatSection";
 import Sidebar from "./chats-sidebar/Sidebar";
 import { Route, Switch } from "react-router-dom";
@@ -18,17 +17,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const HelpDesk: FC = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   return (
-    <ChatInfoContext.Provider value={[open, setOpen]}>
-      <div className={classes.root}>
-        <Sidebar />
-        <Switch>
-          <Route exact path={"/"} component={NoChatSelected} />
-          <Route path={"/:id"} component={ChatSection} />
-        </Switch>
-      </div>
-    </ChatInfoContext.Provider>
+    <div className={classes.root}>
+      <Sidebar />
+      <Switch>
+        <Route exact path={"/"} component={NoChatSelected} />
+        <Route path={"/:id"} component={ChatSection} />
+      </Switch>
+    </div>
   );
 };
 

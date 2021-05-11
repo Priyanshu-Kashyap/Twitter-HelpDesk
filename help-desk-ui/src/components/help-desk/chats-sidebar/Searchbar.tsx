@@ -7,8 +7,7 @@ import {
 } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
 
-import React, { FC, useContext, useEffect, useState } from "react";
-import { MentionContext } from "../../../contexts/mention.context";
+import React, { FC, useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,21 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Searchbar: FC = (props) => {
   const classes = useStyles();
-  const [mention, setMention] = useContext(MentionContext);
   const [search, setSearch] = useState("");
-  const searched = mention?.filter(({ user }) =>
-    user.name.toLowerCase().includes(search)
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && search.length > 3 && searched)
-        setMention(searched);
-    });
-    return () => {
-      document.removeEventListener("keydown", () => {});
-    };
-  }, [search, setMention, searched]);
+  if (search.length > 3) console.log(search);
 
   return (
     <Paper variant="outlined" style={{ borderRadius: "0" }}>

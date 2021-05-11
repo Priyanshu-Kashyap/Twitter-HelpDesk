@@ -39,14 +39,13 @@ const Chats: FC<{ chat: MentionModel }> = ({ chat }) => {
   const classes = useStyles(chat);
   const theme = useTheme();
   const [user] = useContext(UserContext);
-  let message = chat.replies.length
-    ? chat.replies[chat.replies.length - 1]?.text
-    : chat.text;
+  let message = chat.replies.length ? chat.replies[0]?.text : chat.text;
   message = message
     .replace(`@${user?.screen_name}`, "")
     .replace(`@${user?.screen_name.toLowerCase()}`, "")
     .replace(`@${chat.user?.screen_name}`, "")
-    .replace(`@${chat.user?.screen_name.toLowerCase()}`, "");
+    .replace(`@${chat.user?.screen_name.toLowerCase()}`, "")
+    .slice(0, 32);
   return (
     <Card elevation={0} variant={"outlined"} style={{ borderRadius: "0" }}>
       <NavLink
@@ -62,10 +61,15 @@ const Chats: FC<{ chat: MentionModel }> = ({ chat }) => {
           <Typography color={"textPrimary"} variant={"subtitle1"}>
             {chat.user.name}
           </Typography>
-          <Typography color={"textSecondary"} variant={"subtitle2"}>
-            {chat.user.screen_name === user?.screen_name
+          <Typography
+            color={"textSecondary"}
+            variant={"subtitle2"}
+            style={{ overflow: "hidden" }}
+          >
+            {chat.replies[0].user.screen_name === user?.screen_name
               ? `You: ${message}`
               : message}
+            ...
           </Typography>
         </div>
         <Typography
@@ -74,9 +78,7 @@ const Chats: FC<{ chat: MentionModel }> = ({ chat }) => {
           style={{ position: "absolute", right: "1rem", top: "1rem" }}
         >
           {chat.replies.length
-            ? moment(
-                new Date(chat.replies[chat.replies.length - 1].created_at)
-              ).fromNow()
+            ? moment(new Date(chat.replies[0].created_at)).fromNow()
             : moment(new Date(chat.created_at)).fromNow()}
         </Typography>
       </NavLink>

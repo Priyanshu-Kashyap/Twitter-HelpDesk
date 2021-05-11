@@ -22,7 +22,9 @@ import { connect } from "socket.io-client";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      background: "linear-gradient(to top,#1DA1F2,#FFFFFF,#406BBF)",
+      // background: "linear-gradient(to top,#1DA1F2,#FFFFFF,#406BBF)",
+      background:
+        "url('https://abs.twimg.com/sticky/illustrations/lohp_en_1302x955.png')",
       height: "100vh",
       justifyContent: "center",
       alignItems: "center",

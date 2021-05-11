@@ -11,14 +11,18 @@ const useStyles = makeStyles((theme: Theme) =>
       justifySelf: "center",
       alignSelf: "center",
       flexDirection: "column",
-      background: theme.palette.background.default,
+      backgroundColor: "#000000",
+      backgroundImage: "linear-gradient(315deg, #000000 0%, #414141 74%)",
       position: "relative",
+      boxShadow:
+        "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
     },
     header: {
       borderRadius: "1rem 1rem 0 0",
       height: "50%",
       justifyContent: "center",
-      background: theme.palette.primary.main,
+      background: "#045de9",
+      backgroundImage: "linear-gradient(315deg, #045de9 0%, #09c6f9 74%)",
       flexDirection: "column",
     },
     loginArea: {
@@ -40,9 +44,10 @@ const LoginPage: FC<any> = (props) => {
       </div>
       <div className={classes.loginArea}>
         <Button
-          color="primary"
           href="http://localhost:5000/auth/twitter"
           style={{
+            background: "#045de9",
+            backgroundImage: "linear-gradient(315deg, #045de9 0%, #09c6f9 74%)",
             borderRadius: "4rem",
             color: "white",
             padding: "0.5rem 1.5rem",

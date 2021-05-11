@@ -35,14 +35,17 @@ export class TweetService {
     });
     return this.sortData(updatedData, "created_at");
   };
-  replyTweets = async (msg: any, id: string | number) =>
+  replyTweets = async (msg: any, id: string | number) => {
     await twitterClient(this.accessToken, this.refreshToken).post(
       "statuses/update",
       {
         status: msg,
         in_reply_to_status_id: id,
-      }
+      },
+      async () =>
+        app.io.emit("mention", mentionResponse(await this.fetchMentions()))
     );
+  };
 
   streamTweets = (username: string) => {
     twitterClient(this.accessToken, this.refreshToken)

@@ -14,14 +14,9 @@ export const socket = (accessToken: string, refreshToken: string) =>
       );
       tweetService.streamTweets(data.user);
       socket.on("reply", async (data) => {
-        console.log(data);
         await tweetService.replyTweets(
           `@${data.user} ${data.msg.message}`,
           data.msg.id
-        );
-        app.io.emit(
-          "mention",
-          mentionResponse(await tweetService.fetchMentions())
         );
       });
     });
