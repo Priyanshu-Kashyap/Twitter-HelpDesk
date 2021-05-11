@@ -6,10 +6,11 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { ReactComponent as Image } from "../../../assets/icons/add-image.svg";
 import { ReactComponent as Emoji } from "../../../assets/icons/emoji.svg";
 import { ReactComponent as Send } from "../../../assets/icons/send.svg";
+import { socket } from "../../../App";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,8 +29,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const MessageBox: FC = props => {
+const MessageBox: FC<{ username: string; id: string }> = ({ username, id }) => {
   const classes = useStyles();
+  const [message, setMessage] = useState({
+    message: "",
+    id: id,
+  });
+
+  const onSubmit = () => {
+    if (message.message === "") return;
+    socket.emit("reply", { msg: message, user: username });
+    setMessage({ ...message, message: "" });
+  };
+
   return (
     <AppBar className={classes.root} position="relative" variant="outlined">
       <IconButton>
@@ -39,9 +51,18 @@ const MessageBox: FC = props => {
         <Emoji />
       </IconButton>
       <div className={classes.input}>
-        <InputBase placeholder="write a message" />
+        <InputBase
+          value={message.message}
+          onChange={(e) =>
+            setMessage({ ...message, message: e.currentTarget.value })
+          }
+          placeholder={`send message to @${username}`}
+        />
       </div>
-      <IconButton>
+      <IconButton
+        onClick={onSubmit}
+        style={{ paddingLeft: "0", paddingRight: "0.5rem" }}
+      >
         <Send />
       </IconButton>
     </AppBar>

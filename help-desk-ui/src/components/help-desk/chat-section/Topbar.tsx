@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Avatar,
   createStyles,
   IconButton,
   makeStyles,
@@ -8,8 +9,8 @@ import {
 } from "@material-ui/core";
 import { ArrowForwardIosRounded, InfoOutlined } from "@material-ui/icons";
 import React, { FC, useContext } from "react";
-import { ChatInfoContext } from "../../../App.contexts";
-import { ReactComponent as Profile } from "../../../assets/icons/profile.svg";
+import { ChatInfoContext } from "../../../contexts/chatInfo.context";
+import { UserModel } from "../../../models/user.model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,17 +22,21 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Topbar: FC = props => {
+const Topbar: FC<{ user: UserModel }> = ({ user }) => {
   const classes = useStyles();
   const [open, setOpen] = useContext(ChatInfoContext);
+
   return (
     <AppBar className={classes.root} variant="outlined" position="relative">
       <div>
         <IconButton>
-          <Profile />
+          <Avatar
+            src={user.profile_image_url_https}
+            style={{ width: "2rem", height: "2rem" }}
+          />
         </IconButton>
-        <Typography color="textPrimary" variant="h6">
-          username
+        <Typography color="textPrimary" variant="subtitle1">
+          {user.name}
         </Typography>
       </div>
       <IconButton

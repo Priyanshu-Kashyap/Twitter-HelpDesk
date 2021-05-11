@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const LoginPage: FC<any> = props => {
+const LoginPage: FC<any> = (props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -40,10 +40,10 @@ const LoginPage: FC<any> = props => {
       </div>
       <div className={classes.loginArea}>
         <Button
-          onClick={() => props.user(true)}
+          color="primary"
+          href="http://localhost:5000/auth/twitter"
           style={{
             borderRadius: "4rem",
-            background: "#1DA1F2",
             color: "white",
             padding: "0.5rem 1.5rem",
             fontSize: "0.8rem",

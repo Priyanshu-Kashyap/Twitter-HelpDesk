@@ -1,6 +1,6 @@
 import { deserializeUser, serializeUser, use } from "passport";
 import { Strategy } from "passport-twitter";
-import { server } from "../server";
+import { app } from "../app";
 
 export const passportTwitter = () => {
   serializeUser((user, done) => {
@@ -17,9 +17,9 @@ export const passportTwitter = () => {
         callbackURL: process.env.TWITTER_CALLBACK_URL as string,
       },
       (accessToken, refreshToken, profile, done) => {
-        server.user = profile;
-        server.accessToken = accessToken;
-        server.refreshToken = refreshToken;
+        app.user = profile;
+        app.accessToken = accessToken;
+        app.refreshToken = refreshToken;
         done(null, profile);
       }
     )

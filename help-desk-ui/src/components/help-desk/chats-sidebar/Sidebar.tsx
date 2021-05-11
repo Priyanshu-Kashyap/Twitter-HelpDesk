@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Sidehbar: FC = props => {
+const Sidebar: FC = (props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -26,4 +26,4 @@ const Sidehbar: FC = props => {
   );
 };
 
-export default Sidehbar;
+export default Sidebar;
