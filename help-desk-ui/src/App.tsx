@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-export const socket = connect(process.env.REACT_APP_API_BASE_URL as string);
+export const socket = connect("ws://localhost:5000");
 const App: FC = () => {
   const [dark, setDark] = useState(true);
   const [user, setUser] = useState<UserModel | null>(null);

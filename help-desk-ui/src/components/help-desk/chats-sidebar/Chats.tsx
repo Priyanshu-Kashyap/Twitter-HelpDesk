@@ -61,13 +61,14 @@ const Chats: FC<{ chat: MentionModel }> = ({ chat }) => {
           <Typography color={"textPrimary"} variant={"subtitle1"}>
             {chat.user.name}
           </Typography>
-          <Typography
-            color={"textSecondary"}
-            variant={"subtitle2"}
-            style={{ overflow: "hidden" }}
-          >
+          <Typography color={"textSecondary"} variant={"subtitle2"}>
+            {chat.replies[0]?.user.screen_name === user?.screen_name ? (
+              <strong>You: </strong>
+            ) : (
+              ""
+            )}
             {message}
-            ...
+            {message.length > 31 ? "..." : ""}
           </Typography>
         </div>
         <Typography
