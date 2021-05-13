@@ -8,21 +8,20 @@ import {
 } from "@material-ui/core";
 import { PaletteOptions } from "@material-ui/core/styles/createPalette";
 import React, { FC, useEffect, useState } from "react";
-import LoginPage from "./components/auth/LoginPage";
-import HelpDesk from "./components/help-desk/HelpDesk";
-import { getUser } from "./services/auth.service";
-import { UserModel } from "./models/user.model";
-import { UserContext } from "./contexts/user.context";
-import { ThemeContext } from "./contexts/theme.context";
-import { MentionModel } from "./models/mention.model";
-import { MentionContext } from "./contexts/mention.context";
 import { BrowserRouter, Redirect } from "react-router-dom";
 import { connect } from "socket.io-client";
+import LoginPage from "./components/auth/LoginPage";
+import HelpDesk from "./components/help-desk/HelpDesk";
+import { MentionContext } from "./contexts/mention.context";
+import { ThemeContext } from "./contexts/theme.context";
+import { UserContext } from "./contexts/user.context";
+import { MentionModel } from "./models/mention.model";
+import { UserModel } from "./models/user.model";
+import { getUser } from "./services/auth.service";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // background: "linear-gradient(to top,#1DA1F2,#FFFFFF,#406BBF)",
       background:
         "url('https://abs.twimg.com/sticky/illustrations/lohp_en_1302x955.png')",
       height: "100vh",

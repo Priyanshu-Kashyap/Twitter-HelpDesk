@@ -64,8 +64,12 @@ const MessageBox: FC<{ username: string; id: string }> = ({ username, id }) => {
         />
       </div>
       <IconButton
+        disabled={message.message === ""}
         onClick={onSubmit}
-        style={{ paddingLeft: "0", paddingRight: "0.5rem" }}
+        style={{
+          paddingLeft: "0",
+          paddingRight: "0.5rem",
+        }}
       >
         <Send />
       </IconButton>

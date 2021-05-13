@@ -2,11 +2,12 @@ body {
   font-family: "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: 1s;
 }
 
 * {
   box-sizing: border-box;
+  transition: 50ms;
+  scroll-behavior: smooth;
 }
 
 div {

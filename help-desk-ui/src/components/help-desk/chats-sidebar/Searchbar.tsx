@@ -7,7 +7,16 @@ import {
 } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
 
-import React, { FC, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { MentionModel } from "../../../models/mention.model";
+import { MentionContext } from "../../../contexts/mention.context";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,10 +29,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Searchbar: FC = (props) => {
+const Searchbar: FC<{
+  filteredMentions: MentionModel[] | null;
+  setFilteredMentions: Dispatch<SetStateAction<MentionModel[] | null>>;
+}> = ({ filteredMentions, setFilteredMentions }) => {
+  const [mention] = useContext(MentionContext);
   const classes = useStyles();
   const [search, setSearch] = useState("");
-  if (search.length > 3) console.log(search);
+  useEffect(() => {
+    let chats: any = mention?.filter(({ user }) =>
+      user.name.toLowerCase().includes(search)
+    );
+    setFilteredMentions(chats);
+  }, [search, mention, setFilteredMentions]);
 
   return (
     <Paper variant="outlined" style={{ borderRadius: "0" }}>

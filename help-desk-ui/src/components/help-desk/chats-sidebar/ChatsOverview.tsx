@@ -5,9 +5,9 @@ import {
   Paper,
   Theme,
 } from "@material-ui/core";
-import React, { FC, useContext } from "react";
-import { MentionContext } from "../../../contexts/mention.context";
+import React, { FC } from "react";
 import Chats from "./Chats";
+import { MentionModel } from "../../../models/mention.model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,11 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const ChatsOverview: FC = (props) => {
+const ChatsOverview: FC<{ filteredMentions: MentionModel[] | null }> = ({
+  filteredMentions,
+}) => {
   const classes = useStyles();
-  const [mention] = useContext(MentionContext);
 
-  const chats = mention?.map((chat) => (
+  const chats = filteredMentions?.map((chat) => (
     <ListItem key={chat.id_str} itemID={chat.id_str} style={{ padding: 0 }}>
       <Chats chat={chat} />
     </ListItem>

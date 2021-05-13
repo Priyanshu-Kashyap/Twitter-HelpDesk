@@ -66,9 +66,7 @@ const Chats: FC<{ chat: MentionModel }> = ({ chat }) => {
             variant={"subtitle2"}
             style={{ overflow: "hidden" }}
           >
-            {chat.replies[0].user.screen_name === user?.screen_name
-              ? `You: ${message}`
-              : message}
+            {message}
             ...
           </Typography>
         </div>

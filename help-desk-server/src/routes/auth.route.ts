@@ -30,7 +30,7 @@ authRouter.delete("/logout", (req, res, next) => {
 });
 
 authRouter.get("/user", (req: any, res, next) => {
-  res.send(userResponse(req.session.passport.user._json));
+  res.json(userResponse(req.session.passport.user._json));
   socket(req.session.accessToken, req.session.refreshToken);
 });
 

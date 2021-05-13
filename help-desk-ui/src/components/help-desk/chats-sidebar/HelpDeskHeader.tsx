@@ -94,7 +94,7 @@ const HelpDeskHeader: FC = (props) => {
         <IconButton onClick={handleLogout}>
           <ExitToAppRoundedIcon
             className={classes.scaleDown}
-            style={{ fontSize: "2rem" }}
+            style={{ fontSize: "1.75rem" }}
           />
         </IconButton>
       </div>
