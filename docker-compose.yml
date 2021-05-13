@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  frontend:
+    env_file:
+      - help-desk-ui/.env.local
+    build:
+      context: help-desk-ui
+      dockerfile: Dockerfile
+    networks:
+      - backend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+  backend:
+    env_file:
+      - help-desk-server/.env
+    build:
+      context: help-desk-server
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - backend
+    ports:
+      - "5000:5000"
+networks:
+  backend:

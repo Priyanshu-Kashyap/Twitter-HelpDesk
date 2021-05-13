@@ -6,7 +6,6 @@
     "sourceMap": true,
     "outDir": "./build",
     "rootDir": "./src",
-    "noEmit": true,
     "isolatedModules": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
