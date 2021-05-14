@@ -47,7 +47,13 @@ const LoginPage: FC = (props) => {
     <div className={classes.root}>
       <div className={classes.header}>
         <Twitter style={{ transform: "translateX(-2rem)" }} />
-        <em style={{ transform: "translateX(2rem)", fontSize: "2rem" }}>
+        <em
+          style={{
+            transform: "translateX(2rem)",
+            fontSize: "2rem",
+            color: "white",
+          }}
+        >
           HelpDesk
         </em>
       </div>
