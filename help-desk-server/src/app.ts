@@ -38,15 +38,18 @@ class App {
   configureMiddlewares() {
     config();
     this._app
-      .use(cors())
+      .use(cors({ origin: process.env.CLIENT_URL, credentials: true }))
       .use(logger("dev"))
       .use(json())
       .use(urlencoded({ extended: true }))
       .use(
         expressSession({
           secret: process.env.SESSION_SECRET as string,
-          resave: true,
-          saveUninitialized: true,
+          resave: false,
+          saveUninitialized: false,
+          cookie: {
+            secure: false,
+          },
         })
       )
       .use(initialize())
